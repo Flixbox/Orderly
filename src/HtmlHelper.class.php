@@ -21,7 +21,7 @@ class HtmlHelper {
     }
 
     public function set_error($content) {
-        set_p($content);
+        $this->set_p($content);
         die();
     }
 
@@ -124,7 +124,7 @@ class HtmlHelper {
         $content .= $this->
                 create_link(
                         [
-                            "href" => "../../assets/css/bootstrap.min.css",
+                            "href" => "../assets/css/bootstrap.min.css",
                             "rel" => "stylesheet"
                             ] 
                         );

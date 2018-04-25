@@ -35,12 +35,14 @@ class SqlHelper {
     public function execute($sql, array $params = []) {
         try {
             if ($params == []) {
-                return create($sql);
+                return $this->create($sql);
             } else {
-                return prepare($sql, $params);
+                return $this->prepare($sql, $params);
             }
         } catch (Exception $ex) {
-            
+            $this->htmlHelper->set_p("Var dump of SQL: ");
+            var_dump($sql);
+            $this->htmlHelper->set_error($ex->getMessage());
         }
     }
 
