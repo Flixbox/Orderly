@@ -6,8 +6,6 @@
  * and open the template in the editor.
  */
 
-require_once 'HtmlHelper.class.php';
-
 class SqlHelper {
 
     protected $pdo;
@@ -16,7 +14,7 @@ class SqlHelper {
 
     public function __construct($htmlHelper) {
         $this->htmlHelper = $htmlHelper;
-        connect();
+        $this->connect();
     }
 
     private function createPDO() {
@@ -28,7 +26,7 @@ class SqlHelper {
 
     public function connect() {
         try {
-            createPDO();
+            $this->createPDO();
         } catch (PDOException $e) {
             $this->htmlHelper->setError($e->getMessage());
         }
@@ -55,5 +53,4 @@ class SqlHelper {
     private function create($sql) {
         return $this->pdo->query($sql);
     }
-
 }
