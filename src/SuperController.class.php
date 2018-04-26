@@ -39,7 +39,6 @@ class SuperController {
     public function create_product_list() {
         $product_list = new ProductList();
     }
-
 }
 
 $super_controller = new SuperController();

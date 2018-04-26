@@ -53,6 +53,7 @@ class SqlHelper {
     }
 
     private function create($sql) {
-        return $this->pdo->query($sql);
+        $sth = $this->pdo->query($sql);
+        return $sth->fetchAll();
     }
 }

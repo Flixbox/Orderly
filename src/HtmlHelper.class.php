@@ -13,6 +13,7 @@ class HtmlHelper {
     protected $title;
 
     public function __construct($title) {
+        ini_set("display_errors", 1);
         $this->title = $title;
         $this->sqlHelper = new SqlHelper($this);
         $this
@@ -25,7 +26,7 @@ class HtmlHelper {
         die();
     }
 
-    private function create_tag($tag_name, $content, array $attributes = []) {
+    public function create_tag($tag_name, $content, array $attributes = []) {
         $attributes_string = $this->build_attributes_string($attributes);
         return "<$tag_name $attributes_string>$content</$tag_name>".PHP_EOL;
     }
@@ -109,7 +110,15 @@ class HtmlHelper {
     }
     
     public function create_script(array $attributes) {
-        return $this->create_tag("script", $content, $attributes);
+        return $this->create_tag("script", "", $attributes);
+    }
+    
+    public function create_p($content, array $attributes) {
+        return $this->create_tag("p", $content, $attributes);
+    }
+    
+    public function create_input(array $attributes) {
+        return $this->create_tag("input", "", $attributes);
     }
 
     public function set_p($content) {
@@ -144,6 +153,10 @@ class HtmlHelper {
     public function set_footer() {
         $this->set_p("I'm a footer!");
         return $this;
+    }
+    
+    public function write($content) {
+        echo $content;
     }
 
     public function __destruct() {
