@@ -22,8 +22,11 @@ class SuperController {
         } else {
             $nav = $_GET["nav"];
             switch ($nav) {
-                case "Product_List":
+                case Config::product_list:
                     $this->create_product_list();
+                    break;
+                case Config::cart:
+                    //$this->create_product_list();
                     break;
                 default:
                     $this->default_behaviour();

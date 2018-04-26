@@ -30,7 +30,17 @@ class ProductList extends HtmlHelper {
         $sql = Util::get_sql("get_all_products.sql");
         $products_array = $this->sqlHelper->execute($sql);
         $this->array_to_products($products_array);
-        $this->set_cards();
+        $this->build_html();
+    }
+    
+    public function build_html(){
+        $container = "";
+        $cards = $this->create_cards();
+        $container .= $this->create_div($cards, ["class"=>"container"]);
+        $container .= $this->create_fab();
+        $form = $this->create_form($container, ["action"=> Config::super_name . "?nav=" . Config::cart, "method" =>"post"]);
+        $this->write($form);
+        
     }
 
     public function array_to_products(array $product_list) {
@@ -48,7 +58,7 @@ class ProductList extends HtmlHelper {
         }
     }
 
-    public function set_cards(){
+    public function create_cards(){
         $row_contents = "";
         foreach ($this->products as $product) {
             $card_contents = "";
@@ -62,12 +72,14 @@ class ProductList extends HtmlHelper {
             $card_contents .= $this->create_div($card_body, ["class"=>"card-body"]);
             $card_contents .= $this->create_div($product->getCategory(), ["class"=>"card-footer"]);
             $card = $this->create_div($card_contents, ["class"=>"card"]);
-            $card_column = $this->create_div($card, ["class"=>"col-sm-2"]);
+            $card_column = $this->create_div($card, ["class"=>"col-sm-4"]);
             
             $row_contents .= $card_column;
         }
-        $row = $this->create_div($row_contents, ["class"=>"row"]);
-        $container = $this->create_div($row, ["class"=>"container"]);
-        $this->write($container);
+        return $this->create_div($row_contents, ["class"=>"row"]);
+    }
+    
+    public function create_fab() {
+        return $this->create_button("Cart", ["class"=>"btn btn-primary float-right"]);
     }
 }

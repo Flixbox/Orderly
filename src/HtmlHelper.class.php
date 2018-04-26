@@ -6,14 +6,19 @@
  * and open the template in the editor.
  */
 
+require_once '/SqlHelper.class.php';
+require_once '/Util.class.php';
+require_once 'Config.class.php';
+
 class HtmlHelper {
 
-    protected $prefix = "koeln/Orderly/src/";
+    
     protected $sqlHelper;
     protected $title;
 
     public function __construct($title) {
         ini_set("display_errors", 1);
+        session_start();
         $this->title = $title;
         $this->sqlHelper = new SqlHelper($this);
         $this
@@ -28,7 +33,14 @@ class HtmlHelper {
 
     public function create_tag($tag_name, $content, array $attributes = []) {
         $attributes_string = $this->build_attributes_string($attributes);
-        return "<$tag_name $attributes_string>$content</$tag_name>".PHP_EOL;
+        if($content != "") {
+            $content = PHP_EOL . $content . PHP_EOL;
+        }
+        return
+                "<$tag_name $attributes_string>" .
+                $content
+                . "</$tag_name>" .
+                PHP_EOL;
     }
 
     public function set_tag($tag_name, $content, array $attributes = []) {
@@ -59,17 +71,8 @@ class HtmlHelper {
 
     public function create_nav_li() {
         $li = "";
-        $urls = [
-            [
-                "url" => $this->prefix . "index.php",
-                "content" => "Start"
-            ],
-            [
-                "url" => $this->prefix . "ProductList.class.php",
-                "content" => "Products"
-            ]
-        ];
-        foreach ($urls as $element) {
+        var_dump(Config);
+        foreach (Config::navbar as $element) {
             foreach ($element as $key => $value) {
                 switch ($key) {
                     case "url":
@@ -104,21 +107,29 @@ class HtmlHelper {
     public function create_a($content, array $attributes) {
         return $this->create_tag("a", $content, $attributes);
     }
-    
+
+    public function create_button($content, array $attributes) {
+        return $this->create_tag("button", $content, $attributes);
+    }
+
     public function create_link(array $attributes) {
         return $this->create_tag("link", "", $attributes);
     }
-    
+
     public function create_script(array $attributes) {
         return $this->create_tag("script", "", $attributes);
     }
-    
-    public function create_p($content, array $attributes) {
+
+    public function create_p($content, array $attributes = []) {
         return $this->create_tag("p", $content, $attributes);
     }
-    
+
     public function create_input(array $attributes) {
         return $this->create_tag("input", "", $attributes);
+    }
+
+    public function create_form($content, array $attributes) {
+        return $this->create_tag("form", $content, $attributes);
     }
 
     public function set_p($content) {
@@ -128,18 +139,32 @@ class HtmlHelper {
 
     public function set_head() {
         $content = "";
-        $html = "<!doctype html>".PHP_EOL."<html>".PHP_EOL;
+        $html = "<!doctype html>" . PHP_EOL . "<html>" . PHP_EOL;
         $content .= $this->create_tag("title", $this->title);
         $content .= $this->
                 create_link(
-                        [
-                            "href" => "../assets/css/bootstrap.min.css",
-                            "rel" => "stylesheet"
-                            ] 
-                        );
+                [
+                    "href" => "../assets/css/bootstrap.min.css",
+                    "rel" => "stylesheet"
+                ]
+        );
+        $content .= $this->
+                create_link(
+                [
+                    "href" => "../assets/css/material-kit.min.css",
+                    "rel" => "stylesheet"
+                ]
+        );
+        $content .= $this->
+                create_link(
+                [
+                    "href" => "../assets/css/custom.css",
+                    "rel" => "stylesheet"
+                ]
+        );
         $head = $this->create_tag("head", $content);
         $html .= $head;
-        $html .= "<body>".PHP_EOL;
+        $html .= "<body>" . PHP_EOL;
         echo $html;
         return $this;
     }
@@ -151,17 +176,23 @@ class HtmlHelper {
     }
 
     public function set_footer() {
-        $this->set_p("I'm a footer!");
+        $content = $this->create_p("I'm a footer!");
+        $content .= $this->create_script(["src" => "../assets/js/jquery.min.js"]);
+        $content .= $this->create_script(["src" => "../assets/js/core/popper.min.js"]);
+        $content .= $this->create_script(["src" => "../assets/js/bootstrap-material-design.min.js"]);
+        $content .= $this->create_script(["src" => "../assets/js/material-kit.min.js"]);
+        $footer = $this->create_tag("footer", $content);
+        $this->write($footer);
         return $this;
     }
-    
+
     public function write($content) {
         echo $content;
     }
 
     public function __destruct() {
         $this->set_footer();
-        echo "</body>".PHP_EOL."</html>";
+        echo "</body>" . PHP_EOL . "</html>";
     }
 
 }

@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26.04.2018, 13:55:48
+    Author     : Administrator
+*/
+
+button.btn-fab {
+	background: #03A9F4;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	text-align:center;
+	color: #FFF;
+	box-shadow:0px 0px 3px rgba(0,0,0,0.5),3px 3px 3px rgba(0,0,0,0.25);
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	font-size: 2.6667em;
+	display: inline-block;
+	cursor: default;
+}
+
+footer {
+    width: 100%;
+}
