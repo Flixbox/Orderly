@@ -6,9 +6,11 @@
  * and open the template in the editor.
  */
 
-require_once '/sites/ProductList.class.php';
+
 require_once '/HtmlHelper.class.php';
 require_once '/SqlHelper.class.php';
+require_once '/sites/ProductList.class.php';
+require_once '/sites/Cart.class.php';
 
 class SuperController {
 
@@ -22,11 +24,11 @@ class SuperController {
         } else {
             $nav = $_GET["nav"];
             switch ($nav) {
-                case Config::product_list:
+                case Config::PRODUCT_LIST:
                     $this->create_product_list();
                     break;
-                case Config::cart:
-                    //$this->create_product_list();
+                case Config::CART:
+                    $this->create_cart();
                     break;
                 default:
                     $this->default_behaviour();
@@ -41,6 +43,10 @@ class SuperController {
 
     public function create_product_list() {
         $product_list = new ProductList();
+    }
+    
+    public function create_cart() {
+        $cart = new Cart();
     }
 }
 

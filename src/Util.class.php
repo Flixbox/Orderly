@@ -9,7 +9,7 @@
 class Util {
 
     public static function get_sql($name) {
-        $path = Config::$sql_path;
+        $path = Config::SQL_PATH;
         return self::read_file($path . $name);
     }
 

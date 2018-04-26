@@ -10,9 +10,10 @@ require_once '/SqlHelper.class.php';
 require_once '/Util.class.php';
 require_once 'Config.class.php';
 
+//use Config;
+
 class HtmlHelper {
 
-    
     protected $sqlHelper;
     protected $title;
 
@@ -33,7 +34,7 @@ class HtmlHelper {
 
     public function create_tag($tag_name, $content, array $attributes = []) {
         $attributes_string = $this->build_attributes_string($attributes);
-        if($content != "") {
+        if ($content != "") {
             $content = PHP_EOL . $content . PHP_EOL;
         }
         return
@@ -71,8 +72,7 @@ class HtmlHelper {
 
     public function create_nav_li() {
         $li = "";
-        var_dump(Config);
-        foreach (Config::navbar as $element) {
+        foreach (Config::NAVBAR as $element) {
             foreach ($element as $key => $value) {
                 switch ($key) {
                     case "url":

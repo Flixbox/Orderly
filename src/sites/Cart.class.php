@@ -12,52 +12,20 @@ require_once '/Util.class.php';
 require_once '/Config.class.php';
 require_once '/Product.class.php';
 
-class ProductList extends HtmlHelper {
+class Cart extends HtmlHelper {
 
-    protected $title = "Product list";
+    //todo: cart in session speichern
     private $products = [];
 
     public function __construct() {
         parent::__construct($this->title);
-        $this->read_products();
+        var_dump($_POST);
     }
 
     function getProducts() {
         return $this->products;
     }
-
-    public function read_products() {
-        $sql = Util::get_sql("get_all_products.sql");
-        $products_array = $this->sqlHelper->execute($sql);
-        $this->array_to_products($products_array);
-        $this->build_html();
-    }
     
-    public function build_html(){
-        $container = "";
-        $cards = $this->create_cards();
-        $container .= $this->create_div($cards, ["class"=>"container"]);
-        $container .= $this->create_fab();
-        $form = $this->create_form($container, ["action"=> Config::SUPER_NAME . "?nav=" . Config::CART, "method" =>"post"]);
-        $this->write($form);
-        
-    }
-
-    public function array_to_products(array $product_list) {
-        foreach ($product_list as $row) {
-            $product = new Product();
-            $product
-                    ->setId($row["id"])
-                    ->setName($row["name"])
-                    ->setDescription($row["description"])
-                    ->setVat($row["vat"])
-                    ->setAmount($row["amount"])
-                    ->setPrice($row["price"])
-                    ->setCategory($row["rubrik"]);
-            $this->products[] = $product;
-        }
-    }
-
     public function create_cards(){
         $row_contents = "";
         foreach ($this->products as $product) {
@@ -78,8 +46,5 @@ class ProductList extends HtmlHelper {
         }
         return $this->create_div($row_contents, ["class"=>"row"]);
     }
-    
-    public function create_fab() {
-        return $this->create_button("Cart", ["class"=>"btn btn-primary float-right"]);
-    }
+
 }
